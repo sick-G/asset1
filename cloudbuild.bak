@@ -1,0 +1,28 @@
+steps:
+  # ステップ1: Dockerイメージをビルド
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '${_IMAGE_NAME}', '.']
+
+
+  # ステップ2: Dockerイメージをプッシュ
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_IMAGE_NAME}']
+
+
+  # ステップ3: SBOMをエクスポートしてGCSへコピー
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Artifact Analysisのスキャン完了を待機
+        echo "Waiting 300 seconds for SBOM generation to complete..."
+        sleep 100 && \
+        gcloud artifacts sbom export --uri="${_IMAGE_NAME}" && \
+        sleep 200 && \
+        myhoge=$(gcloud artifacts sbom list --resource="${_IMAGE_NAME}" --format="value(occ.sbomReference.payload.predicate.location)")
+        gsutil cp $$myhoge gs://${_GCS_BUCKET_NAME}/${_IMAGE_NAME_TAG_SLASHED}.sbom.json
+# ビルド完了後にプッシュするイメージ名をリスト
+images:
+  - '${_IMAGE_NAME}'
+
