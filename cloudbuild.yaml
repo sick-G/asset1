@@ -1,4 +1,8 @@
 steps:
-  - name: "bash"
-    args: ["echo", "Hello, World!"]
+  # ステップ1: Dockerイメージをビルド
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '${_IMAGE_NAME}', '.']
 
+  # ステップ2: Dockerイメージをプッシュ
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_IMAGE_NAME}']
