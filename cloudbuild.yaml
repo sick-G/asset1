@@ -1,7 +1,7 @@
 steps:
   # ステップ1: Dockerイメージをビルド
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-northeast1-docker.pkg.dev/assettest1/dockrepo/trigger:$SHORT_SHA'', '.']
+    args: ['build', '-t', 'asia-northeast1-docker.pkg.dev/assettest1/dockrepo/trigger:$SHORT_SHA', '.']
 
   # ステップ2: Dockerイメージをプッシュ
   - name: 'gcr.io/cloud-builders/docker'
