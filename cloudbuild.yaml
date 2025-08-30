@@ -5,7 +5,7 @@ steps:
 
   # ステップ2: Dockerイメージをプッシュ
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '${asia-northeast1-docker.pkg.dev/assettest1/dockrepo/trigger:$SHORT_SHA'}']
+    args: ['push', 'asia-northeast1-docker.pkg.dev/assettest1/dockrepo/trigger:$SHORT_SHA']
       #steps:
       #- name: 'gcr.io/cloud-builders/docker'
       #args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-image', '.']
